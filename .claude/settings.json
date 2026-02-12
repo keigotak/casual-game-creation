@@ -1,0 +1,159 @@
+{
+  "system": {
+    "name": "Game Dev Agent System",
+    "version": "2.0.0",
+    "description": "マルチエージェントゲーム開発システム"
+  },
+  "directories": {
+    "projects": "projects/",
+    "shared": "shared/",
+    "templates": "shared/templates/",
+    "knowledge": "knowledge/",
+    "reusableCode": "knowledge/reusable-code/"
+  },
+  "agents": {
+    "orchestrator": {
+      "description": "Claude Code本体がOrchestrator役を担う",
+      "tools": ["TodoWrite", "Task", "AskUserQuestion", "EnterPlanMode"]
+    },
+    "designer": {
+      "skills": ["/design-gdd", "/asset-design"],
+      "outputs": [".project_memory/gdd.md", ".project_memory/assets-credits.md"]
+    },
+    "developer": {
+      "skills": ["/implement-feature", "/fix-bugs"],
+      "subagent": "general-purpose",
+      "tools": ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+    },
+    "qa": {
+      "skills": ["/qa-review", "/playtest-review"],
+      "outputs": [".project_memory/bugs/"]
+    },
+    "localization": {
+      "skills": ["/i18n-check", "/translate"],
+      "outputs": [".project_memory/translations/", "src/i18n/locales/"]
+    },
+    "sound": {
+      "skill": "/sound-design",
+      "outputs": [".project_memory/sounds-credits.md", "public/sounds/"]
+    },
+    "writer": {
+      "skill": "/write-description",
+      "outputs": [".project_memory/description-*.md", "README.md"]
+    },
+    "devops": {
+      "skills": ["/release", "/init-project"],
+      "subagent": "Bash"
+    }
+  },
+  "skills": {
+    "init-project": {
+      "description": "新規Webゲームプロジェクトの初期化（Tailwind v4 + vitest + i18n）",
+      "agent": "devops",
+      "phase": "init"
+    },
+    "design-gdd": {
+      "description": "GDD作成・更新（コアループ・初回体験・リテンション設計含む）",
+      "agent": "designer",
+      "phase": "design"
+    },
+    "implement-feature": {
+      "description": "GDDに基づく機能実装",
+      "agent": "developer",
+      "phase": "implement"
+    },
+    "fix-bugs": {
+      "description": "バグレポートに基づく修正",
+      "agent": "developer",
+      "phase": "implement"
+    },
+    "playtest-review": {
+      "description": "プレイテスト観点のUX・ゲームフィールレビュー",
+      "agent": "qa",
+      "phase": "qa"
+    },
+    "qa-review": {
+      "description": "品質レビュー・バグ検出（ビルド検証含む）",
+      "agent": "qa",
+      "phase": "qa"
+    },
+    "i18n-check": {
+      "description": "翻訳漏れ・整合性チェック",
+      "agent": "localization",
+      "phase": "i18n"
+    },
+    "translate": {
+      "description": "翻訳実行",
+      "agent": "localization",
+      "phase": "i18n"
+    },
+    "asset-design": {
+      "description": "アイコン・UI素材・ビジュアルアセット設計",
+      "agent": "designer",
+      "phase": "assets"
+    },
+    "sound-design": {
+      "description": "効果音・BGMの設計・管理（Web Audio API対応）",
+      "agent": "sound",
+      "phase": "assets"
+    },
+    "write-description": {
+      "description": "itch.io説明文・README・マーケティングテキスト作成",
+      "agent": "writer",
+      "phase": "release"
+    },
+    "release": {
+      "description": "リリース準備・itch.ioデプロイ",
+      "agent": "devops",
+      "phase": "release"
+    }
+  },
+  "workflow": {
+    "phases": ["init", "design", "implement", "qa", "i18n", "assets", "release"],
+    "recommended_flow": [
+      "/init-project",
+      "/design-gdd",
+      "/implement-feature (繰り返し)",
+      "/playtest-review",
+      "/qa-review",
+      "/fix-bugs (必要に応じて)",
+      "/i18n-check → /translate",
+      "/asset-design → /sound-design",
+      "/write-description",
+      "/release"
+    ],
+    "qualityGates": {
+      "design_to_implement": ["gdd_approved"],
+      "implement_to_qa": ["build_success", "tests_pass"],
+      "qa_to_i18n": ["critical_bugs_zero"],
+      "i18n_to_release": ["translations_complete"]
+    }
+  },
+  "projectMemory": {
+    "location": ".project_memory/",
+    "files": {
+      "gdd": "gdd.md",
+      "architecture": "architecture.md",
+      "decisions": "decisions.md",
+      "bugs": "bugs/",
+      "translations": "translations/",
+      "releases": "releases/",
+      "soundsCredits": "sounds-credits.md",
+      "assetsCredits": "assets-credits.md",
+      "descriptionJa": "description-ja.md",
+      "descriptionEn": "description-en.md"
+    }
+  },
+  "knowledge": {
+    "patterns": "knowledge/patterns.md",
+    "pitfalls": "knowledge/pitfalls.md",
+    "reusableCode": {
+      "seededRandom": "knowledge/reusable-code/seeded-random.js",
+      "storage": "knowledge/reusable-code/storage.js",
+      "useGameLoop": "knowledge/reusable-code/use-game-loop.js",
+      "soundManager": "knowledge/reusable-code/sound-manager.js",
+      "fpsMonitor": "knowledge/reusable-code/fps-monitor.js",
+      "analytics": "knowledge/reusable-code/analytics.js"
+    }
+  }
+}

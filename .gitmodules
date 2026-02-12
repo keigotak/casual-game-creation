@@ -1,0 +1,15 @@
+[submodule "projects/Dinosaviver"]
+	path = projects/Dinosaviver
+	url = https://github.com/aru-k/Dinosaviver.git
+[submodule "projects/Ignition"]
+	path = projects/Ignition
+	url = https://github.com/aru-k/Ignition.git
+[submodule "projects/bounce-escape"]
+	path = projects/bounce-escape
+	url = https://github.com/aru-k/bounce-escape.git
+[submodule "projects/mayoi-neko"]
+	path = projects/mayoi-neko
+	url = https://github.com/aru-k/mayoi-neko.git
+[submodule "projects/Warfront"]
+	path = projects/Warfront
+	url = https://github.com/aru-k/Warfront.git
