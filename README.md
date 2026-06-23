@@ -1,4 +1,10 @@
-# Game Dev Agent System
+# Casual Game Creation
+
+A Claude Code-based multi-agent workflow for building small web games.
+
+This project explores agentic software development using Claude Code Skills, Subagents, Hooks, reusable templates, QA loops, localization checks, and release workflows.
+
+The focus is not game development itself, but the structure of multi-agent collaboration for iterative software creation.
 
 Claude Codeを活用したマルチエージェントゲーム開発システム。
 
